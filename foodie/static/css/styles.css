@@ -1,0 +1,50 @@
+html
+{
+    background-color: #EFEFEF;
+    font-family: Arial;
+}
+
+.recipe
+{
+    background: #FEF7F7;
+    width: 30em;
+    margin: 0; /*auto; <- centers posts*/
+    margin-bottom: 0.4em;
+    vertical-align: middle;
+    padding: 2em;
+    line-height: 1em;
+}
+.block
+{
+    background: #FEF7F7;
+    margin: 0 auto;
+    padding: 1em;
+    border-width: .1em;
+    border-color: #E6E6E6;
+    border-style: solid;
+    width: 40em;
+}
+
+.page-header
+{
+    background-color: #CA4D4D;
+    color: white;
+    margin-top:	0;
+    padding: 20px 20px 20px	40px;
+    margin-bottom: 1em;
+}
+
+.container
+{
+    margin-left: 1em;
+}
+
+.date
+{
+    color: #696969;
+}
+
+h1, h2, h3, h4
+{
+    font-family: DejaVu Sans Light;
+}

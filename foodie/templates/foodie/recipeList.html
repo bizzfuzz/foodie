@@ -1,0 +1,13 @@
+{% extends 'foodie/base.html' %}
+
+{% block content %}
+    {% for recipe in recipes %}
+        <div class="recipe">
+            <h2>
+                <a href="{% url 'recipeInfo' pk=recipe.pk %}">{{recipe.title}}</a>
+            </h2>
+            <small class="date" >{{recipe.publishDate}}</small>
+            <p>{{recipe.description}}</p>
+        </div>
+    {% endfor %}
+{% endblock content %}

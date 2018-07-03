@@ -1,0 +1,22 @@
+{% extends 'foodie/base.html' %}
+
+{% block content %}
+    <div class="block">
+        <h2>{{recipe.title}}</h2>
+    </div>
+    <div class="block">
+        <p>{{recipe.description}}</p>
+    </div>
+    <div class="block">
+        <h3>Ingredients</h3>
+        {% for ingredient in ingredients %}
+            <p>{{ingredient.amount}} of {{ingredient.name}}</p>
+        {% endfor %}
+    </div>
+    <div class="block">
+        <h3>Directions</h3>
+        {% for direction in directions %}
+            <p>{{direction.number}}. {{direction.text}}</p>
+        {% endfor %}
+    </div>
+{% endblock content %}

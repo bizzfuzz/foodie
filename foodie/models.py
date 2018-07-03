@@ -6,6 +6,7 @@ class Recipe(models.Model):
     author = models.ForeignKey('auth.user', on_delete = models.CASCADE)
     title = models.CharField(max_length = 200)
     publishDate = models.DateTimeField(blank = True, null = True)
+    description = models.TextField()
 
     def publish(self):
         self.publishDate = timezone.now()
@@ -22,4 +23,13 @@ class Ingredient(models.Model):
 class Direction(models.Model):
     number = models.IntegerField()
     text = models.TextField()
+    recipe = models.ForeignKey(Recipe, on_delete = models.CASCADE)
+
+class Nutrition(models.Model):
+    calories = models.IntegerField()
+    fat = models.DecimalField(max_digits = 10, decimal_places = 1)
+    carbs = models.DecimalField(max_digits = 10, decimal_places = 1)
+    protein = models.DecimalField(max_digits = 10, decimal_places = 1)
+    cholesterol = models.IntegerField()
+    sodium = models.IntegerField()
     recipe = models.ForeignKey(Recipe, on_delete = models.CASCADE)
