@@ -1,0 +1,52 @@
+{% extends 'foodie/base.html' %}
+{% load filters %}
+
+{% block content %}
+    <form class="" method="post">
+        {% csrf_token %}
+        <div class="block grid">
+            <h1>New Recipe</h1>
+        </div>
+        <div class="block grid">
+            <h3>Info</h3>
+            Title {{base.title|addClass:'forminput'}}
+            <br>
+            Description {{base.description|addClass:'forminput'}}
+            <br>
+            <br>
+            <button type="submit" name="button" class="forminput">Set</button>
+        </div>
+        <div class="block grid">
+            <h3>Ingredient</h3>
+            Amount {{ing.amount|addClass:'forminput'}}
+            <br>
+            Name {{ing.name|addClass:'forminput'}}
+            <br>
+            <br>
+            <button type="submit" name="button" class="forminput">Add</button>
+        </div>
+        <div class="block grid">
+            <h3>Direction</h3>
+            {{dir.text|addClass:'forminput'}}
+            <br>
+            <br>
+            <button type="submit" name="button" class="forminput">Add</button>
+        </div>
+        <div class="block grid">
+            <h3>Nutrition</h3>
+            Calories {{nut.calories|addClass:'forminput'}}
+            Fat {{nut.fat|addClass:'forminput'}}
+            Carbs {{nut.carbs|addClass:'forminput'}}
+            Protein {{nut.protein|addClass:'forminput'}}
+            Cholesterol {{nut.cholesterol|addClass:'forminput'}}
+            Sodium {{nut.sodium|addClass:'forminput'}}
+            <br>
+            <br>
+            <button type="submit" name="button" class="forminput">Set</button>
+        </div>
+    </form>
+
+    <div class="block">
+        <h1>Preview</h1>
+    </div>
+{% endblock content %}

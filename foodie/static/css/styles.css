@@ -1,6 +1,6 @@
 html
 {
-    background-color: #EFEFEF;
+    background-color: #E8E1E1;
     font-family: Arial;
 }
 
@@ -14,7 +14,8 @@ html
     padding: 2em;
     line-height: 1em;
 }
-.block
+.block,
+.blockleft
 {
     background: #FEF7F7;
     margin: 0 auto;
@@ -23,6 +24,16 @@ html
     border-color: #E6E6E6;
     border-style: solid;
     width: 40em;
+}
+.grid
+{
+    display: table-cell;
+}
+.blockleft
+{
+    margin: 0;
+    float: left;
+    width: 10%;
 }
 
 .page-header
@@ -47,4 +58,30 @@ html
 h1, h2, h3, h4
 {
     font-family: DejaVu Sans Light;
+}
+
+a.nav:link, a.nav:visited
+{
+    color: #E7E2E2;
+    text-decoration: none;
+    font-family: Ubuntu Condensed, Arial;
+    font-size: 1.1em;
+    margin-left:2em;
+    outline: none;
+}
+
+a.nav:hover, a.nav:active
+{
+    color: #94CAC8;
+    text-decoration: underline;
+    outline: none;
+}
+
+.forminput
+{
+    border-width: .1em;
+    border-color: #E6E6E6;
+    border-style: solid;
+    display: table;
+    min-width: 100%;
 }
