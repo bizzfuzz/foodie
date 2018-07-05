@@ -4,6 +4,7 @@ from django.utils import timezone
 # Create your models here.
 class Recipe(models.Model):
     author = models.ForeignKey('auth.user', on_delete = models.CASCADE)
+    image = models.ImageField(upload_to = 'media/')
     title = models.CharField(max_length = 200, null=True, blank=True)
     publishDate = models.DateTimeField(blank = True, null = True)
     description = models.TextField(null=True, blank=True)

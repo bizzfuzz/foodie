@@ -7,7 +7,7 @@ from .models import Nutrition
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ('title', 'description',)
+        fields = ('title', 'description', 'image')
 
 class IngredientForm(forms.ModelForm):
     class Meta:

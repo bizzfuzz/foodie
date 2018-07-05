@@ -2,9 +2,9 @@
 {% load filters %}
 
 {% block content %}
-    <form class="" method="post">
+    <form class="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <button type="submit" name="clear" value="1">Clear</button>
+        <button type="submit" name="clear" value="1">Clear All</button>
         <button type="submit" name="publish" value="1">Publish</button>
         <div class="block grid">
             <h1>New Recipe</h1>
@@ -12,6 +12,8 @@
         <div class="block grid">
             <h3>Info</h3>
             Title {{base.title|addClass:'forminput'}}
+            <br>
+            <input type="file" name="pic">
             <br>
             Description {{base.description|addClass:'forminput'}}
             <br>
@@ -25,6 +27,7 @@
             Name {{ing.name|addClass:'forminput'}}
             <br>
             <br>
+            <button type="submit" name="clearing" value="1" class="forminput">Clear Ingredients</button>
             <button type="submit" name="button" class="forminput">Add</button>
         </div>
         <div class="block grid">
@@ -32,6 +35,7 @@
             {{dir.text|addClass:'forminput'}}
             <br>
             <br>
+            <button type="submit" name="cleardir" value="1" class="forminput">Clear Directions</button>
             <button type="submit" name="button" class="forminput">Add</button>
         </div>
         <div class="block grid">

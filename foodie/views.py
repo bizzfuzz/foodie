@@ -8,6 +8,7 @@ from .forms import IngredientForm
 from .forms import DirectionForm
 from .forms import NutritionForm
 from django.utils import timezone
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 def recipeList(request):
@@ -18,12 +19,49 @@ def recipeInfo(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     ingredients = Ingredient.objects.filter(recipe__pk = recipe.pk)
     directions = Direction.objects.filter(recipe__pk = recipe.pk).order_by('number')
-    return render(request, 'foodie/recipeInfo.html', {'recipe': recipe, 'ingredients': ingredients, 'directions': directions})
+    nutrition = Nutrition.objects.filter(recipe__pk = recipe.pk)
+    return render(request, 'foodie/recipeInfo.html',
+    {
+        'recipe': recipe, 'ingredients': ingredients,
+        'directions': directions, 'nut': nutrition
+    })
 
 def newRecipe(request):
     if request.method == 'POST':
         if request.POST.get('clear'):
             clearRecipe(request)
+        elif request.POST.get('clearing'):
+            request.session['ingredients'] = []
+        elif request.POST.get('cleardir'):
+            request.session['directions'] = []
+        elif request.POST.get('publish'):
+            recipe = Recipe()
+            recipe.title = request.session['title']
+            recipe.description = request.session['description']
+
+            ings = request.session['ingredients']
+            ingredients = []
+            for ing in ings:
+                newing = Ingredient()
+                newing.amount = ing['amount']
+                newing.name = ing['name']
+                ingredients.append(newing)
+
+            dirs = request.session['directions']
+            directions = []
+            for dir in dirs:
+                newdir = Direction()
+                newdir.number = dirs['number']
+                newdir.text = dirs['text']
+                directions.append(newdir)
+
+            nutrition = Nutrition()
+            nutrition.calories = request.session['calories']
+            nutrition.fat = request.session['fat']
+            nutrition.carbs = request.session['carbs']
+            nutrition.protein = request.session['protein']
+            nutrition.cholesterol = request.session['cholesterol']
+            nutrition.sodium = request.session['sodium']
         else:
             recipe = parseRecipe(request)
             debugrecipe(recipe)
@@ -103,7 +141,7 @@ def debugrecipe(recipe):
 
 def clearRecipe(request):
     request.session['title'] = ''
-    request.session['desc'] = ''
+    request.session['description'] = ''
     request.session['ingredients'] = []
     request.session['directions'] = []
     request.session['calories'] = ''
@@ -113,6 +151,8 @@ def clearRecipe(request):
     request.session['cholesterol'] = ''
     request.session['sodium'] = ''
 
+def formtitle(request):
+    return request.POST.get('pic', False)
 def formtitle(request):
     return request.POST.get('base-title', False)
 def formdesc(request):

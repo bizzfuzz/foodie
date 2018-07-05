@@ -19,4 +19,15 @@
             <p>{{direction.number}}. {{direction.text}}</p>
         {% endfor %}
     </div>
+    <div class="block">
+        {% for nutrition in nut %}
+            <h3>Nutrition</h3>
+            <p>{{nutrition.calories}} calories</p>
+            <p>{{nutrition.fat}} g fat</p>
+            <p>{{nutrition.carbs}} g carbohydrates</p>
+            <p>{{nutrition.protein}} g protein</p>
+            <p>{{nutrition.cholesterol}} mg cholesterol</p>
+            <p>{{nutrition.sodium}} mg sodium</p>
+        {% endfor %}
+    </div>
 {% endblock content %}
