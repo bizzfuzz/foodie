@@ -4,6 +4,8 @@
 {% block content %}
     <form class="" method="post">
         {% csrf_token %}
+        <button type="submit" name="clear" value="1">Clear</button>
+        <button type="submit" name="publish" value="1">Publish</button>
         <div class="block grid">
             <h1>New Recipe</h1>
         </div>
@@ -48,5 +50,23 @@
 
     <div class="block">
         <h1>Preview</h1>
+    </div>
+    <div class="block">
+        {{request.session.title}}
+    </div>
+    <div class="block">
+        <p>{{request.session.description}}</p>
+    </div>
+    <div class="block">
+        <h3>Ingredients</h3>
+        {% for ingredient in request.session.ingredients %}
+            <p>{{ingredient.amount}} of {{ingredient.name}}</p>
+        {% endfor %}
+    </div>
+    <div class="block">
+        <h3>Directions</h3>
+        {% for direction in request.session.directions %}
+            <p>{{direction.number}}. {{direction.text}}</p>
+        {% endfor %}
     </div>
 {% endblock content %}

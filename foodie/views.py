@@ -21,44 +21,97 @@ def recipeInfo(request, pk):
     return render(request, 'foodie/recipeInfo.html', {'recipe': recipe, 'ingredients': ingredients, 'directions': directions})
 
 def newRecipe(request):
-    #print("meth: " + request.method)
     if request.method == 'POST':
-        #print('\nin\n')
-        title = formtitle(request)
-        desc = formdesc(request)
-        ingredient = forming(request)
-        ingamount = formingamount(request)
-        direction = formdir(request)
-        calories = formnutcal(request)
-        fat = formnutfat(request)
-        carbs = formnutcarbs(request)
-        protein = formnutpro(request)
-        cholesterol = formnutchol(request)
-        sodium = formnutsod(request)
-
-        print("title: " + title)
-        print("desc: " + desc)
-        print("ing: " + ingredient)
-        print("ingamount: " + ingamount)
-        print("dir: " + direction)
-        print("calories: " + calories)
-        print("fat: " + fat)
-        print("carbs: " + carbs)
-        print("pro: " + protein)
-        print("cholesterol: " + cholesterol)
-        print("sodium: " + sodium)
-
-        recipe = getRecipeTitle(request)
-        print('recipe: ' + recipe)
+        if request.POST.get('clear'):
+            clearRecipe(request)
+        else:
+            recipe = parseRecipe(request)
+            debugrecipe(recipe)
+            processprecipe(request, recipe)
         return redirect('newRecipe')
     else:
         base = RecipeForm(prefix = 'base')
         ing = IngredientForm(prefix = 'ing')
         dir = DirectionForm(prefix = 'dir')
         nut = NutritionForm(prefix = 'nut')
-        return render(request, 'foodie/recipeEdit.html', {
-        'base': base, 'ing': ing, 'dir': dir, 'nut': nut,
+        return render(request, 'foodie/recipeEdit.html',
+        {
+            'base': base, 'ing': ing, 'dir': dir, 'nut': nut,
+            'request': request
         })
+
+def parseRecipe(request):
+    ret = {}
+    ret['title'] = formtitle(request)
+    ret['desc'] = formdesc(request)
+    ret['ingredient'] = forming(request)
+    ret['ingamount'] = formingamount(request)
+    ret['direction'] = formdir(request)
+    ret['calories'] = formnutcal(request)
+    ret['fat'] = formnutfat(request)
+    ret['carbs'] = formnutcarbs(request)
+    ret['protein'] = formnutpro(request)
+    ret['cholesterol'] = formnutchol(request)
+    ret['sodium'] = formnutsod(request)
+    return ret
+
+def processprecipe(request, recipe):
+    if(recipe['title']):
+        request.session['title'] = recipe['title']
+    if(recipe['desc']):
+        request.session['description'] = recipe['desc']
+    if(recipe['ingredient'] and recipe['ingamount']):
+        ingredients = request.session.get('ingredients', [])
+        newing = {}
+        newing['name'] = recipe['ingredient']
+        newing['amount'] = recipe['ingamount']
+        ingredients.append(newing)
+        request.session['ingredients'] = ingredients
+    if(recipe['direction']):
+        directions = request.session.get('directions', [])
+        newdir = {}
+        newdir['number'] = len(directions) + 1
+        newdir['text'] = recipe['direction']
+        directions.append(newdir)
+        request.session['directions'] = directions
+        #print("dirlen: " + str(len(directions)))
+    if(recipe['calories']):
+        request.session['calories'] = recipe['calories']
+    if(recipe['fat']):
+        request.session['fat'] = recipe['fat']
+    if(recipe['carbs']):
+        request.session['carbs'] = recipe['carbs']
+    if(recipe['protein']):
+        request.session['protein'] = recipe['protein']
+    if(recipe['cholesterol']):
+        request.session['cholesterol'] = recipe['cholesterol']
+    if(recipe['sodium']):
+        request.session['sodium'] = recipe['sodium']
+
+def debugrecipe(recipe):
+    print("title: " + str(recipe['title']))
+    print("desc: " + str(recipe['desc']))
+    print("ing: " + str(recipe['ingredient']))
+    print("ingamount: " + str(recipe['ingamount']))
+    print("dir: " + str(recipe['direction']))
+    print("calories: " + str(recipe['calories']))
+    print("fat: " + str(recipe['fat']))
+    print("carbs: " + str(recipe['carbs']))
+    print("pro: " + str(recipe['protein']))
+    print("cholesterol: " + str(recipe['cholesterol']))
+    print("sodium: " + str(recipe['sodium']))
+
+def clearRecipe(request):
+    request.session['title'] = ''
+    request.session['desc'] = ''
+    request.session['ingredients'] = []
+    request.session['directions'] = []
+    request.session['calories'] = ''
+    request.session['fat'] = ''
+    request.session['carbs'] = ''
+    request.session['protein'] = ''
+    request.session['cholesterol'] = ''
+    request.session['sodium'] = ''
 
 def formtitle(request):
     return request.POST.get('base-title', False)
@@ -82,19 +135,3 @@ def formnutchol(request):
     return request.POST.get('nut-cholesterol', False)
 def formnutsod(request):
     return request.POST.get('nut-sodium', False)
-
-def getRecipeTitle(request):
-    return request.session.get('recipetitle', '')
-
-def checkSessionRecipe(request):
-    ingredients = request.session.get('ingredients', [])
-    directions = request.session.get('directions', [])
-    recipe = request.session.get('recipe', Recipe())
-    nutrition = request.session.get('nutrition', Nutrition())
-
-def resetSessionRecipe(request):
-    request.session['recipetitle'] = 'def'
-    request.session['recipedesc'] = ''
-    request.session['ingredients'] = []
-    request.session['directions'] = []
-    request.session['nutrition'] = []
